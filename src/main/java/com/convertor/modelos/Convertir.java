@@ -14,6 +14,8 @@ public class Convertir {
     private final String apiCon = apiUrl+"/pair/";
     private final HttpClient cliente = HttpClient.newHttpClient();
     private final Gson gson = new Gson();
+    private float valorPeso = 0.0f;
+    private float valorEuro = 0.0f;
 
     public Convertir(){
     }
@@ -24,7 +26,7 @@ public class Convertir {
             HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(apiCon+"/USD/COP")).build();
             HttpResponse<String> response = cliente.send(request, HttpResponse.BodyHandlers.ofString());
             Respuesta respuesta = gson.fromJson(response.body(), Respuesta.class);
-            float valorPeso = respuesta.getConversion_rate();
+            valorPeso = respuesta.getConversion_rate();
 
             resultado = monto * valorPeso;
 
@@ -41,12 +43,79 @@ public class Convertir {
             HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(apiCon+"USD/COP")).build();
             HttpResponse<String> response = cliente.send(request, HttpResponse.BodyHandlers.ofString());
             Respuesta respuesta = gson.fromJson(response.body(), Respuesta.class);
-            float valorPeso = respuesta.getConversion_rate();
-            System.out.println(valorPeso);
+            valorPeso = respuesta.getConversion_rate();
+
             resultado = monto / valorPeso;
 
             return resultado;
         }catch (IOException | InterruptedException e){
+            System.out.println(e.getMessage());
+        }
+        return resultado;
+    }
+
+    public float euroToPesoCop(float monto){
+        float resultado = 0.0f;
+        try {
+            HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(apiCon+"EUR/COP")).build();
+            HttpResponse<String> response = cliente.send(request, HttpResponse.BodyHandlers.ofString());
+            Respuesta respuesta = gson.fromJson(response.body(), Respuesta.class);
+            valorPeso = respuesta.getConversion_rate();
+
+            resultado = monto * valorPeso;
+
+            return resultado;
+        } catch (IOException | InterruptedException e) {
+            System.out.println(e.getMessage());
+        }
+        return resultado;
+    }
+
+    public float pesoCopToEuro(float monto){
+        float resultado = 0.0f;
+        try {
+            HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(apiCon+"EUR/COP")).build();
+            HttpResponse<String> response = cliente.send(request, HttpResponse.BodyHandlers.ofString());
+            Respuesta respuesta = gson.fromJson(response.body(), Respuesta.class);
+            valorPeso = respuesta.getConversion_rate();
+
+            resultado = monto / valorPeso;
+        }catch (IOException | InterruptedException e){
+            System.out.println(e.getMessage());
+        }
+        return resultado;
+    }
+
+    public float dolarToEuro(float monto){
+        float resultado = 0.0f;
+        try {
+            HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(apiCon+"USD/EUR")).build();
+            HttpResponse<String> response = cliente.send(request, HttpResponse.BodyHandlers.ofString());
+            Respuesta respuesta = gson.fromJson(response.body(), Respuesta.class);
+            valorEuro = respuesta.getConversion_rate();
+
+            resultado = monto * valorEuro;
+
+            return resultado;
+
+        } catch (IOException | InterruptedException e) {
+            System.out.println(e.getMessage());
+        }
+        return resultado;
+    }
+
+    public float euroToDolar(float monto){
+        float resultado = 0.0f;
+        try {
+            HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(apiCon+"USD/EUR")).build();
+            HttpResponse<String> response = cliente.send(request, HttpResponse.BodyHandlers.ofString());
+            Respuesta respuesta = gson.fromJson(response.body(), Respuesta.class);
+            valorEuro = respuesta.getConversion_rate();
+
+            resultado = monto / valorEuro;
+
+            return resultado;
+        } catch (IOException | InterruptedException e) {
             System.out.println(e.getMessage());
         }
         return resultado;
