@@ -30,6 +30,12 @@ public class Main {
                     float resultado = convertir.dolarToPesoCop(monto);
                     System.out.println(monto + " USD equivale a " + resultado + " COP");
                 }
+                case 2 ->{
+                    System.out.println("Digite el monto en pesos colombianos: ");
+                    monto = sc.nextFloat();
+                    float resultado = convertir.pesoCopToDolar(monto);
+                    System.out.println(monto + " COP equivale a " + resultado + " USD");
+                }
             }
         }while (op >= 1 && op <=6);
     }
